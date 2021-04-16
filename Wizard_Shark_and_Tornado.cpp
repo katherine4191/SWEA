@@ -44,12 +44,13 @@ int arr_dy[4][10] = { {-1, 1, -1, 1, -1, 1, -2, 2, 0, 0},
 float p[9] = { 0.01, 0.01, 0.07, 0.07, 0.10, 0.10, 0.02, 0.02, 0.05 };
 
 int main() {
-	scanf("%d", &N);
-
+	// scanf("%d", &N);
+	// for (int i = 0; i < N; i++)
+	// 	for (int j = 0; j < N; j++)
+	// 		scanf("%d", &grid[i][j]);
+	N = 5;
 	int shk_x = (N - 1) / 2;	int shk_y = (N - 1) / 2;
-	for (int i = 0; i < N; i++)
-		for (int j = 0; j < N; j++)
-			scanf("%d", &grid[i][j]);
+	int grid[5][5] = {{0,0,0,0,0}, {0,0,0,0,0}, {0,10,0,0,0}, {0,0,0,0,0}, {0,0,0,0,0}};
 
 	// 1. tornado 방향
 	// 규칙: (1 move,1 rotation)*2 + (2 move,1 rotation)*2
@@ -72,17 +73,19 @@ int main() {
 		int dx = arr_Dir[idx].dx;		int dy = arr_Dir[idx].dy;
 		int n_shk_x = shk_x + dx, n_shk_y = shk_y + dy;
 		printf("%d, %d \n", n_shk_x, n_shk_y);
-		int n_x = 0, n_y = 0, total_sand = grid[n_shk_x][n_shk_y];
+		int n_x = 0, n_y = 0;
+		int total_sand = grid[n_shk_x][n_shk_y], flow_sand = 0;
+		flow_sand = total_sand * p[idx];
 		for (int j = 0; j < 9; j++) {
 			n_x = n_shk_x - arr_dx[idx][j];
 			n_y = n_shk_y - arr_dy[idx][j];
 			if (n_x < 0 || n_x >= N || n_y < 0 || n_y >= N) {
-				out_sand += total_sand * p[idx];
-				grid[n_shk_x][n_shk_y] -= total_sand * p[idx];
+				out_sand += flow_sand;
+				grid[n_shk_x][n_shk_y] -= flow_sand;
 				continue;
 			}
-			grid[n_x][n_y] += total_sand * p[idx];
-			grid[n_shk_x][n_shk_y] -= total_sand * p[idx];
+			grid[n_x][n_y] += flow_sand;
+			grid[n_shk_x][n_shk_y] -= flow_sand;
 		}
 		n_x = n_shk_x - arr_dx[idx][9];
 		n_y = n_shk_y - arr_dy[idx][9];
