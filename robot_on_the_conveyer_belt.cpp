@@ -41,6 +41,8 @@ void rotation() {
 
 	robot.push_front(robot.back());
 	robot.pop_back();
+
+	robot[n - 1] = false; // rotation시 끝에 도달한 robot은 땅으로
 }
 
 void move() {
